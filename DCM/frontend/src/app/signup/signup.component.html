@@ -1,0 +1,45 @@
+<mat-toolbar color="primary" class="expanded-toolbar">
+    <span>PaceMaker</span>
+    <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+
+        <button mat-button routerLink="/login">
+            <mat-icon>power_settings_new</mat-icon>
+            Login
+          </button>
+      </div>
+</mat-toolbar>
+
+<br>
+<br>
+<mat-card>
+<form class="login-form">
+    <h1 class="welcome">New User</h1>
+    <div fxLayout="column" fxLayoutAlign="space-around center">
+        <div fxLayout="row">
+            <mat-form-field appearance="outline">
+                <input matInput class="form-control" placeholder="Username" [(ngModel)]="username" name="username"
+                    required>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row">
+            <mat-form-field appearance="outline">
+                <input matInput class="form-control" placeholder="Password" [type]="hide ? 'password' : 'text'"
+                    [(ngModel)]="password" name="password" required>
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row">
+            <mat-form-field appearance="outline">
+                <input matInput class="form-control" placeholder="Confirm" [type]="hide ? 'password' : 'text'"
+                    [(ngModel)]="retypePassword" name="retypePassword" required>
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </mat-form-field>
+        </div>
+        <mat-error *ngIf="!isSignupValid"> Please fill in all the information.</mat-error>
+
+        <div fxLayout="row" fxLayoutAligh="spacebetween" fxLayoutGap="15px">
+            <button mat-flat-button color="primary"  (click)="signUp()">Sign Up</button>
+        </div>
+    </div>
+</form>
+</mat-card>
