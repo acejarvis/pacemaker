@@ -1,16 +1,30 @@
 .parameter {
-    width: 300px;
+    width: 350px;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.top-parameter {
+    width: 350px;
     margin-top: 20px;
     margin-left: 20px;
 }
+
+.dual-slider {
+    min-width: calc(200px / 2);
+}
+
+.tri-slider {
+    min-width: calc(170px / 3);
+}
+
 
 .chart {
     margin-top: 20px;
     margin-left: 20px;
     margin-right: 20px;
-    width: calc(100% - 360px)l
 }
 
 .description {
-    width: 140px
+    width: 160px
 }
