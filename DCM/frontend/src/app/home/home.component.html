@@ -1,3 +1,66 @@
 <app-toolbar></app-toolbar>
+<div fxLayout="row" fxLayoutAlign="space-between start">
+    <div fxLayout="column" fxLayoutAlign="start start">
+        <mat-card class="parameter">
+            <div fxLayout="row" fxLayoutAlign="space-between start">
+                <h3 mat-line>Natural Atrium</h3>
+                <mat-slide-toggle [(ngModel)]="isNaturalAtriumON"> {{isNaturalAtriumON ? '&nbsp;&nbsp;ON' : 'OFF'}}
+                </mat-slide-toggle>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div mat-line class="description">Pulse Width (ms):</div>
+                <mat-slider thumbLabel [(ngModel)]="pulseWidthA" tickInterval="20" min="1" max="20"> </mat-slider>
+                <div>{{pulseWidthA}}</div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div mat-line class="description">Atrium Amplitude:</div>
+                <mat-slider thumbLabel [(ngModel)]="atriumAmplitude" tickInterval="20" min="1" max="1000"> </mat-slider>
+                <div>{{atriumAmplitude}}</div>
+            </div>
+        </mat-card>
 
-<p>55555555555555</p>
+        <mat-card class="parameter">
+            <div fxLayout="row" fxLayoutAlign="space-between start">
+                <h3 mat-line>Natural Ventricle</h3>
+                <mat-slide-toggle [(ngModel)]="isNaturalVentricleON">
+                    {{isNaturalVentricleON ? '&nbsp;&nbsp;ON' : 'OFF'}}</mat-slide-toggle>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div mat-line class="description">Pulse Width (ms):</div>
+                <mat-slider thumbLabel [(ngModel)]="pulseWidthV" tickInterval="20" min="1" max="20"> </mat-slider>
+                <div>{{pulseWidthV}}</div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div mat-line class="description">Ventricle Amplitude:</div>
+                <mat-slider thumbLabel [(ngModel)]="ventricleAmplitude" tickInterval="20" min="1" max="1000">
+                </mat-slider>
+                <div>{{ventricleAmplitude}}</div>
+            </div>
+        </mat-card>
+
+        <mat-card class="parameter">
+
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div mat-line class="description">Lower Rate Limit:</div>
+                <mat-slider thumbLabel [(ngModel)]="lowerRateLimit" tickInterval="20" min="1" max="1000"> </mat-slider>
+                <div>{{lowerRateLimit}}</div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div mat-line class="description">Upper Rate Limit:</div>
+                <mat-slider thumbLabel [(ngModel)]="upperRateLimit" tickInterval="20" min="1" max="1000"> </mat-slider>
+                <div>{{upperRateLimit}}</div>
+            </div>
+        </mat-card>
+    </div>
+    <div fxLayout="column" fxFlex="0 1 calc(100% - 360px)">
+        <mat-card class="chart" *ngIf="isNaturalAtriumON">
+            <apx-chart [series]="chartAOptions.series" [chart]="chartAOptions.chart" [xaxis]="chartAOptions.xaxis"
+                [title]="chartAOptions.title"></apx-chart>
+        </mat-card>
+        <mat-card class="chart" *ngIf="isNaturalVentricleON">
+            <apx-chart [series]="chartVOptions.series" [chart]="chartVOptions.chart" [xaxis]="chartVOptions.xaxis"
+                [title]="chartVOptions.title"></apx-chart>
+        </mat-card>
+    </div>
+
+</div>

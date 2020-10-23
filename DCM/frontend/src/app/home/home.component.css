@@ -1,0 +1,16 @@
+.parameter {
+    width: 300px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.chart {
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: calc(100% - 360px)l
+}
+
+.description {
+    width: 140px
+}

@@ -8,15 +8,12 @@ import { AuthService } from '../services/web/auth.service';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
-  isAuthenticated$: Observable<boolean>;
-  currentUser$: Observable<string>;
+
+  currentUser: string;
   constructor(private authService: AuthService) { }
   ngOnInit(): void {
-    this.isAuthenticated$ = this.authService.isLoggesIn;
-    this.currentUser$ = this.authService.currentUserName;
-    console.log(this.isAuthenticated$);
-    console.log(this.currentUser$);
-
+    this.currentUser = this.authService.currentUser;
+    console.log(this.currentUser);
   }
 
   logout(): void {

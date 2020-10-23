@@ -1,12 +1,12 @@
 <mat-toolbar color="primary" class="expanded-toolbar">
-    <span>PaceMaker</span>
+  <span>PaceMaker</span>
   <div fxLayout="row" fxShow="false" fxShow.gt-sm>
 
-    <button mat-button  (click)="logout()">
+    <div>{{currentUser}}</div>
+    <button mat-button (click)="logout()">
       <mat-icon>exit_to_app</mat-icon>
       Logout
     </button>
-    <div *ngIf="(currentUser$ | async) as username"> {{username}}</div>
   </div>
 
 </mat-toolbar>

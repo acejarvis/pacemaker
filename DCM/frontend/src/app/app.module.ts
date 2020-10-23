@@ -12,6 +12,8 @@ import { HttpErrorInterceptor } from './services/web/http-error.interceptor';
 import { SignupComponent } from './signup/signup.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { AuthGuard } from './services/web/auth.guard';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { AuthGuard } from './services/web/auth.guard';
     MaterialModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FlexLayoutModule,
+    NgApexchartsModule
   ],
   providers: [
     AuthGuard,

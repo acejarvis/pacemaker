@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
       if (response === true) {
         this.loginInvalid = false;
         this.authService.inMemoryToken = true;
-        this.authService.loginInUser = this.username;
+        this.authService.currentUser = this.username;
         this.router.navigate(['/home']);
       }
       else if (response === false) {
