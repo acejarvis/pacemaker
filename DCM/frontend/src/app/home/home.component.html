@@ -5,16 +5,18 @@
         <mat-card class="top-parameter">
             <div fxLayout="column" fxLayoutAlign="space-between space-between" fxLayoutGap="10px">
                 <div mat-line>Bradycardia Therapy Mode</div>
-                <mat-form-field appearance="outline">
-                    <mat-label>Select a Mode</mat-label>
-                    <mat-select [(value)]="mode">
-                        <mat-option value="0">AOO</mat-option>
-                        <mat-option value="1">AAI</mat-option>
-                        <mat-option value="2">VOO</mat-option>
-                        <mat-option value="3">VVI</mat-option>
-                        <mat-option value="4">DDD</mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <form>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Select a Mode</mat-label>
+                        <mat-select [(ngModel)]="mode" name="mode">
+                            <mat-option value="0">AOO</mat-option>
+                            <mat-option value="1">AAI</mat-option>
+                            <mat-option value="2">VOO</mat-option>
+                            <mat-option value="3">VVI</mat-option>
+                            <mat-option value="4">DDD</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
             </div>
         </mat-card>
         <!-- Rate Limit -->
@@ -43,7 +45,7 @@
         <!-- pulse width  -->
         <mat-card class="parameter">
             <div fxLayout="column" fxLayoutAlign="space-between space-between" fxLayoutGap="0px">
-                <div mat-line>A or V Pulse Width</div>
+                <div mat-line>{{(mode == 0 || mode == 1) ? 'Atrial': 'Ventricle' }} Pulse Width</div>
                 <mat-radio-group fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px"
                     [(ngModel)]="pulseWidthSelect">
                     <div fxLayout="row">
@@ -62,8 +64,7 @@
         </mat-card>
         <!-- amplitude -->
         <mat-card class="parameter">
-            <div mat-line class="description">Amplitude Regulated:</div>
-
+            <div mat-line class="description">{{(mode == 0 || mode == 1) ? 'Atrial': 'Ventricle' }} Regulated:</div>
             <div fxLayout="row" fxLayoutAlign="start center">
                 <mat-radio-group fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px"
                     [(ngModel)]="amplitudeRegulatedSelect">
@@ -82,10 +83,9 @@
                         <div>{{amplitudeRegulated}} V </div>
                     </div>
                 </mat-radio-group>
-
-
             </div>
-            <div mat-line class="description" style="margin-bottom: 10px;">Amplitude Unregulated:</div>
+            <div mat-line class="description" style="margin-bottom: 10px;">
+                {{(mode == 0 || mode == 1) ? 'Atrial': 'Ventricle' }} Unregulated:</div>
             <mat-radio-group [(ngModel)]="amplitudeUnregulated" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px">
                 <mat-radio-button [value]="0">Off</mat-radio-button>
                 <mat-radio-button [value]="1.25">1.25V</mat-radio-button>
@@ -96,15 +96,15 @@
 
         </mat-card>
         <!-- Refractory Period -->
-        <mat-card class="parameter">
+        <mat-card class="parameter" *ngIf="mode == 1 || mode == 3">
             <div fxLayout="column" fxLayoutAlign="space-between space-between" fxLayoutGap="-10px">
-                <div fxLayout="row" fxLayoutAlign="start center">
+                <div fxLayout="row" fxLayoutAlign="start center" *ngIf="mode == 1">
                     <div mat-line class="description">Refractory Period (ARP):</div>
                     <mat-slider thumbLabel [(ngModel)]="atrialRefractoryPeriod" step="10" min="150" max="500">
                     </mat-slider>
                     <div>{{atrialRefractoryPeriod}} ms</div>
                 </div>
-                <div fxLayout="row" fxLayoutAlign="start center">
+                <div fxLayout="row" fxLayoutAlign="start center" *ngIf="mode == 3">
                     <div mat-line class="description">Refractory Period (VRP):</div>
                     <mat-slider thumbLabel [(ngModel)]="ventricularRefractoryPeriod" step="10" min="150" max="500">
                     </mat-slider>
@@ -116,7 +116,8 @@
             <h3>Device</h3>
             <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="7px">
                 <div>Status: {{ isRunning ? 'Communicating':'Connected'}}</div>
-                <button mat-flat-button color="primary" style="margin-inline-start: 35%;" (click)="stopStart()">
+                <button mat-flat-button [color]="isRunning ? 'warn':'primary'" style="margin-inline-start: 35%;"
+                    (click)="stopStart()">
                     {{isRunning ? 'Stop':'Run'}}</button>
             </div>
         </mat-card>
