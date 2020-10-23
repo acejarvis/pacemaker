@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const port = 3000;
 const fs = require('fs');
 const cors = require('cors')
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
@@ -49,9 +51,7 @@ app.post('/auth/register', (req, res) => {
     }
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+
 
 function getUserData () {
     const jsonData = fs.readFileSync('users.json');
@@ -71,6 +71,13 @@ function writeUserData (username, password) {
     else {
         return { status: false, msg: 'User spots are full.'};
     }
-
-    
+   
 }
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+  });
+
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+  });
