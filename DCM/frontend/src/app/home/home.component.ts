@@ -7,7 +7,7 @@ import {
   ApexChart,
   ApexXAxis,
   ApexTitleSubtitle
-} from "ng-apexcharts";
+} from 'ng-apexcharts';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -43,19 +43,19 @@ export class HomeComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
   public chartAOptions: Partial<any>;
   public chartVOptions: Partial<any>;
-  data = [10, 41, 35, 10, 10, 11, 9, 12, 45, 10, 10, 11, 9, 12, 10, 10, 11, 9, 12]
+  data = [10, 41, 35, 10, 10, 11, 9, 12, 45, 10, 10, 11, 9, 12, 10, 10, 11, 9, 12];
 
   constructor(private snackBar: MatSnackBar) {
     this.chartAOptions = {
       series: [
         {
-          name: "My-series",
+          name: 'My-series',
           data: this.data
         }
       ],
       chart: {
         height: 350,
-        type: "line",
+        type: 'line',
         animations: {
           enabled: true,
           easing: 'linear',
@@ -73,10 +73,10 @@ export class HomeComponent implements OnInit {
         curve: 'smooth'
       },
       title: {
-        text: "Atrium Signals"
+        text: 'Atrium Signals'
       },
       xaxis: {
-        categories: ["10000", "10001", "10002", "10003", "10004", "10005", "10006", "10007", "10008"]
+        categories: ['10000', '10001', '10002', '10003', '10004', '10005', '10006', '10007', '10008']
       }
     };
     // window.setInterval(function () {
@@ -86,13 +86,13 @@ export class HomeComponent implements OnInit {
     this.chartVOptions = {
       series: [
         {
-          name: "My-series",
+          name: 'My-series',
           data: [10, 10, 10, 10, 10, 10, 10, 10, 10]
         }
       ],
       chart: {
         height: 350,
-        type: "line",
+        type: 'line',
         zoom: {
           enabled: true,
           type: 'xy',
@@ -100,10 +100,10 @@ export class HomeComponent implements OnInit {
         }
       },
       title: {
-        text: "Ventricle Signals"
+        text: 'Ventricle Signals'
       },
       xaxis: {
-        categories: ["10000", "10001", "10002", "10003", "10004", "10005", "10006", "10007", "10008"]
+        categories: ['10000', '10001', '10002', '10003', '10004', '10005', '10006', '10007', '10008']
       }
     };
 
@@ -115,7 +115,7 @@ export class HomeComponent implements OnInit {
 
   stopStart(): void {
     this.isRunning = !this.isRunning;
-    if (this.isRunning) { this.updateSeries(); this.status = "Communicating"; }
+    if (this.isRunning) { this.updateSeries(); this.status = 'Communicating'; }
     else { this.status = 'Connected'; }
   }
 
