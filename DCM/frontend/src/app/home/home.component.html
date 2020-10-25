@@ -1,22 +1,43 @@
 <app-toolbar></app-toolbar>
 <div fxLayout="row" fxLayoutAlign="space-between start">
     <div fxLayout="column" fxLayoutAlign="start start">
-        <!-- Mode -->
+        <!-- Device Control -->
         <mat-card class="top-parameter">
-            <div fxLayout="column" fxLayoutAlign="space-between space-between" fxLayoutGap="10px">
+            <div style="font-size: large; margin-bottom: 10px;">Device</div>
+            <div>Status: {{status}}</div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-form-field appearance="outline">
+                    <mat-label>Select Device Port</mat-label>
+                    <mat-select [(value)]="port">
+                        <mat-option [value]="0">COM3</mat-option>
+                        <mat-option [value]="1">COM4</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button mat-raised-button [color]="isConnected ? 'secondary':'primary'"
+                    style="margin-left: 20px; margin-bottom: 15px;" (click)="connect()">
+                    {{isConnected ? 'Disconnect':'Connect'}}</button>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+
+                <button mat-raised-button [color]="isRunning ? 'warn':'primary'" (click)="stopStart()">
+                    {{isRunning ? 'Stop':'Run'}}</button>
+                <button mat-raised-button color="primary" (click)="dispatch()">Dispatch Parameters</button>
+            </div>
+        </mat-card>
+        <!-- Mode -->
+        <mat-card class="parameter">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
                 <div mat-line>Bradycardia Therapy Mode</div>
-                <form>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Select a Mode</mat-label>
-                        <mat-select [(ngModel)]="mode" name="mode">
-                            <mat-option value="0">AOO</mat-option>
-                            <mat-option value="1">AAI</mat-option>
-                            <mat-option value="2">VOO</mat-option>
-                            <mat-option value="3">VVI</mat-option>
-                            <mat-option value="4">DDD</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </form>
+                <mat-form-field appearance="outline">
+                    <mat-label>Select a Mode</mat-label>
+                    <mat-select [(value)]="mode">
+                        <mat-option [value]="0">AOO</mat-option>
+                        <mat-option [value]="1">AAI</mat-option>
+                        <mat-option [value]="2">VOO</mat-option>
+                        <mat-option [value]="3">VVI</mat-option>
+                        <mat-option [value]="4">DDD</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </mat-card>
         <!-- Rate Limit -->
@@ -64,7 +85,7 @@
         </mat-card>
         <!-- amplitude -->
         <mat-card class="parameter">
-            <div mat-line class="description">{{(mode == 0 || mode == 1) ? 'Atrial': 'Ventricle' }} Regulated:</div>
+            <div mat-line class="description">{{(mode == 0 || mode == 1) ? 'Atrial': 'Ventricle' }} Amplitude:</div>
             <div fxLayout="row" fxLayoutAlign="start center">
                 <mat-radio-group fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px"
                     [(ngModel)]="amplitudeRegulatedSelect">
@@ -84,16 +105,15 @@
                     </div>
                 </mat-radio-group>
             </div>
-            <div mat-line class="description" style="margin-bottom: 10px;">
-                {{(mode == 0 || mode == 1) ? 'Atrial': 'Ventricle' }} Unregulated:</div>
+            <!-- <div mat-line class="description" style="margin-bottom: 10px;">
+                {{(mode == 0 || mode == 1) ? 'Atrial': 'Ventricle' }} Amplitude Unregulated:</div>
             <mat-radio-group [(ngModel)]="amplitudeUnregulated" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px">
                 <mat-radio-button [value]="0">Off</mat-radio-button>
                 <mat-radio-button [value]="1.25">1.25V</mat-radio-button>
                 <mat-radio-button [value]="2.5">2.5V</mat-radio-button>
                 <mat-radio-button [value]="3.75">3.75V</mat-radio-button>
                 <mat-radio-button [value]="5.0">5.0V</mat-radio-button>
-            </mat-radio-group>
-
+            </mat-radio-group> -->
         </mat-card>
         <!-- Refractory Period -->
         <mat-card class="parameter" *ngIf="mode == 1 || mode == 3">
@@ -112,20 +132,9 @@
                 </div>
             </div>
         </mat-card>
-        <mat-card class="parameter">
-            <h3>Device</h3>
-            <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="7px">
-                <div>Status: {{ isRunning ? 'Communicating':'Connected'}}</div>
-                <button mat-flat-button [color]="isRunning ? 'warn':'primary'" style="margin-inline-start: 35%;"
-                    (click)="stopStart()">
-                    {{isRunning ? 'Stop':'Run'}}</button>
-            </div>
-        </mat-card>
-
-
     </div>
     <div fxLayout="column" fxFlex="calc(100% - 410px)">
-        <mat-card class="chart">
+        <mat-card class="chart" style="margin-top: 20px;">
             <apx-chart [series]="chartAOptions.series" [chart]="chartAOptions.chart" [xaxis]="chartAOptions.xaxis"
                 [title]="chartAOptions.title"></apx-chart>
         </mat-card>
@@ -134,5 +143,4 @@
                 [title]="chartVOptions.title"></apx-chart>
         </mat-card>
     </div>
-
 </div>

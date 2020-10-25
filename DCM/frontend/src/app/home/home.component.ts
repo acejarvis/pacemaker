@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import {
   ChartComponent,
@@ -24,7 +25,10 @@ export class HomeComponent implements OnInit {
 
   // DCM parameters
   isRunning = false;
-  mode = 0;
+  isConnected = false;
+  port = 0;
+  status = 'Disconnected';
+  mode: number;
   lowerRateLimit = 60;
   upperRateLimit = 120;
   pulseWidth = 0.4;
@@ -35,13 +39,13 @@ export class HomeComponent implements OnInit {
   atrialRefractoryPeriod = 250;
   ventricularRefractoryPeriod = 320;
 
-
+  changeset = false;
   @ViewChild('chart') chart: ChartComponent;
   public chartAOptions: Partial<any>;
   public chartVOptions: Partial<any>;
   data = [10, 41, 35, 10, 10, 11, 9, 12, 45, 10, 10, 11, 9, 12, 10, 10, 11, 9, 12]
 
-  constructor() {
+  constructor(private snackBar: MatSnackBar) {
     this.chartAOptions = {
       series: [
         {
@@ -83,7 +87,7 @@ export class HomeComponent implements OnInit {
       series: [
         {
           name: "My-series",
-          data: [10, 41, 35, 15, 10, 11, 39, 12, 45]
+          data: [10, 10, 10, 10, 10, 10, 10, 10, 10]
         }
       ],
       chart: {
@@ -106,9 +110,38 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
   stopStart(): void {
     this.isRunning = !this.isRunning;
+    if (this.isRunning) { this.updateSeries(); this.status = "Communicating"; }
+    else { this.status = 'Connected'; }
+  }
+
+  connect(): void {
+    this.isConnected = !this.isConnected;
+    if (this.isConnected) {
+      this.status = 'Connected';
+      this.mode = 0;
+      if (this.port === 1) {
+        this.snackBar.open('New Device Connected', undefined, { duration: 1000, verticalPosition: 'top' });
+      }
+    }
+    else { this.status = 'Disconnected'; }
+  }
+
+  dispatch(): void {
+    this.snackBar.open('Dispatched successfully', undefined, { duration: 1000, verticalPosition: 'top' });
+  }
+
+  public updateSeries(): void {
+    this.changeset = !this.changeset;
+
+    this.chartAOptions.series = this.changeset ? [{
+      data: [23, 44, 1, 22, 10, 11, 10, 10, 12, 13]
+    }] : [{
+      data: [11, 10, 10, 12, 11, 10, 10, 12, 13, 23]
+    }];
   }
 }
