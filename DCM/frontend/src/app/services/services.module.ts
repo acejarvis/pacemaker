@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from './web/auth.service';
 import { HttpClientHelperService } from './web/http-client-helper.service';
 import { InMemoryDataService } from './web/in-memory-data.service';
+import { DashService } from './dash/dash.service';
 
 
 
@@ -14,7 +15,8 @@ import { InMemoryDataService } from './web/in-memory-data.service';
   providers: [
     AuthService,
     HttpClientHelperService,
-    InMemoryDataService
+    InMemoryDataService,
+    DashService
   ]
 })
 export class ServicesModule { }

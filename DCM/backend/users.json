@@ -1,1 +1,38 @@
-[{"username":"jarvis","password":"123456"},{"username":"nick","password":"22222"},{"username":"helen","password":"54321"},{"username":"asd","password":"123456"},{"username":"asdss","password":"123456"},{"username":"yoyoyo","password":"asdasd"},{"username":"lalala","password":"123456"},{"username":"jarvisag","password":"111111"},{"username":"Helen Shelton","password":"Helen123"}]
+[
+    {
+        "username": "jarvis",
+        "password": "123456",
+        "mode": 3,
+        "lowerRateLimit": 61,
+        "upperRateLimit": 130,
+        "atrialPulseAmplitude": 2.2,
+        "ventriclePulseAmplitude": 0,
+        "atrialPulseWidth": 1,
+        "ventriclePulseWidth": 0.8,
+        "atrialRefractoryPeriod": 350
+    },
+    {
+        "username": "helen",
+        "password": "123456",
+        "mode": 3,
+        "lowerRateLimit": 61,
+        "upperRateLimit": 130,
+        "atrialPulseAmplitude": 2.2,
+        "ventriclePulseAmplitude": 0,
+        "atrialPulseWidth": 1,
+        "ventriclePulseWidth": 0.8,
+        "atrialRefractoryPeriod": 350
+    },
+    {
+        "username": "nick",
+        "password": "123456",
+        "mode": 3,
+        "lowerRateLimit": 61,
+        "upperRateLimit": 130,
+        "atrialPulseAmplitude": 2.2,
+        "ventriclePulseAmplitude": 0,
+        "atrialPulseWidth": 1,
+        "ventriclePulseWidth": 0.8,
+        "atrialRefractoryPeriod": 350
+    }
+]

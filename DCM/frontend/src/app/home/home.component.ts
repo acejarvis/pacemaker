@@ -8,6 +8,8 @@ import {
   ApexXAxis,
   ApexTitleSubtitle
 } from 'ng-apexcharts';
+import { DashService } from '../services/dash/dash.service';
+import { AuthService } from '../services/web/auth.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -31,13 +33,18 @@ export class HomeComponent implements OnInit {
   mode: number;
   lowerRateLimit = 60;
   upperRateLimit = 120;
-  pulseWidth = 0.4;
+  atrialPulseWidth = 0.4;
+  ventriclePulseWidth = 0.4;
   pulseWidthSelect = 1;
+  atrialPulseAmplitude = 1;
+  ventriclePulseAmplitude = 1;
+
   amplitudeRegulated = 3.5;
   amplitudeRegulatedSelect = 1;
   amplitudeUnregulated = 3.7;
   atrialRefractoryPeriod = 250;
   ventricularRefractoryPeriod = 320;
+
 
   changeset = false;
   @ViewChild('chart') chart: ChartComponent;
@@ -45,7 +52,10 @@ export class HomeComponent implements OnInit {
   public chartVOptions: Partial<any>;
   data = [10, 41, 35, 10, 10, 11, 9, 12, 45, 10, 10, 11, 9, 12, 10, 10, 11, 9, 12];
 
-  constructor(private snackBar: MatSnackBar) {
+  constructor(
+    private snackBar: MatSnackBar,
+    private dashService: DashService,
+    private authService: AuthService) {
     this.chartAOptions = {
       series: [
         {
@@ -110,7 +120,25 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.dashService.getPaceMakerData(this.authService.currentUser).subscribe(response => {
+      this.mode = response.mode;
+      this.lowerRateLimit = response.lowerRateLimit;
+      this.upperRateLimit = response.upperRateLimit;
+      this.atrialPulseWidth = response.atrialPulseWidth;
+      this.ventriclePulseWidth = response.ventriclePulseWidth;
+      this.atrialPulseAmplitude = response.atrialPulseAmplitude;
+      this.ventriclePulseAmplitude = response.ventriclePulseAmplitude;
+      this.atrialRefractoryPeriod = response.atrialRefractoryPeriod;
+      this.ventricularRefractoryPeriod = response.ventricularRefractoryPeriod;
+      if (this.mode === 0 || this.mode === 1) {
+        this.pulseWidthSelect = response.atrialPulseWidth < 0.1 ? 0 : 1;
+        this.amplitudeRegulatedSelect = response.atrialPulseAmplitude < 0.5 ? 0 : 1;
+      }
+      else {
+        this.pulseWidthSelect = response.ventriclePulseWidth < 0.1 ? 0 : 1;
+        this.amplitudeRegulatedSelect = response.ventriclePulseAmplitude < 0.5 ? 0 : 1;
+      }
+    });
   }
 
   stopStart(): void {
@@ -132,7 +160,32 @@ export class HomeComponent implements OnInit {
   }
 
   dispatch(): void {
-    this.snackBar.open('Dispatched successfully', undefined, { duration: 1000, verticalPosition: 'top' });
+    console.log(this.pulseWidthSelect);
+    if (this.pulseWidthSelect === 0) {
+      if (this.mode === 0 || this.mode === 1) { this.atrialPulseWidth = 0.05; }
+      else { this.ventriclePulseWidth = 0.05; }
+    }
+    console.log(this.amplitudeRegulatedSelect);
+    if (this.amplitudeRegulatedSelect === 0) {
+      if (this.mode === 0 || this.mode === 1) { this.atrialPulseAmplitude = 0; }
+      else { this.ventriclePulseAmplitude = 0; }
+    }
+    const body = {
+      username: this.authService.currentUser,
+      mode: this.mode,
+      lowerRateLimit: this.lowerRateLimit,
+      upperRateLimit: this.upperRateLimit,
+      atrialPulseAmplitude: this.atrialPulseAmplitude,
+      ventriclePulseAmplitude: this.ventriclePulseAmplitude,
+      atrialPulseWidth: this.atrialPulseWidth,
+      ventriclePulseWidth: this.ventriclePulseWidth,
+      ventricularRefractoryPeriod: this.ventricularRefractoryPeriod,
+      atrialRefractoryPeriod: this.atrialRefractoryPeriod
+    };
+    console.log(body);
+    this.dashService.dispatchPaceMakerData(body).subscribe(result => {
+      this.snackBar.open(result.msg, undefined, { duration: 1000, verticalPosition: 'top' });
+    });
   }
 
   public updateSeries(): void {

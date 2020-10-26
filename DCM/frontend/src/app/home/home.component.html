@@ -35,7 +35,6 @@
                         <mat-option [value]="1">AAI</mat-option>
                         <mat-option [value]="2">VOO</mat-option>
                         <mat-option [value]="3">VVI</mat-option>
-                        <mat-option [value]="4">DDD</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -75,17 +74,21 @@
                     </div>
                     <div fxLayout="row" fxLayoutAlign="start center">
                         <mat-radio-button [value]="1"></mat-radio-button>
-                        <mat-slider thumbLabel [(ngModel)]="pulseWidth" step="0.1" min="0.1" max="1.9"
-                            [disabled]="!pulseWidthSelect">
+                        <mat-slider *ngIf="mode == 0 || mode == 1" thumbLabel [(ngModel)]="atrialPulseWidth" step="0.1"
+                            min="0.1" max="1.9" [disabled]="!pulseWidthSelect">
                         </mat-slider>
-                        <div>{{pulseWidth}} ms</div>
+                        <mat-slider *ngIf="mode == 2 || mode == 3" thumbLabel [(ngModel)]="ventriclePulseWidth"
+                            step="0.1" min="0.1" max="1.9" [disabled]="!pulseWidthSelect">
+                        </mat-slider>
+                        <div>{{(mode == 0 || mode == 1) ? atrialPulseWidth : ventriclePulseWidth }} ms</div>
                     </div>
                 </mat-radio-group>
             </div>
         </mat-card>
         <!-- amplitude -->
         <mat-card class="parameter">
-            <div mat-line class="description">{{(mode == 0 || mode == 1) ? 'Atrial': 'Ventricle' }} Amplitude:</div>
+            <div mat-line class="description">{{(mode == 0 || mode == 1) ? 'Atrial': 'Ventricle' }} Pulse Amplitude:
+            </div>
             <div fxLayout="row" fxLayoutAlign="start center">
                 <mat-radio-group fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px"
                     [(ngModel)]="amplitudeRegulatedSelect">
@@ -95,13 +98,23 @@
                     </div>
                     <div fxLayout="row" fxLayoutAlign="start center">
                         <mat-radio-button [value]="1"></mat-radio-button>
-                        <mat-slider class="dual-slider" thumbLabel [(ngModel)]="amplitudeRegulated" step="0.1" min="0.5"
-                            max="3.2" [disabled]="!amplitudeRegulatedSelect">
+                        <mat-slider *ngIf="mode == 0 || mode == 1" class="dual-slider" thumbLabel
+                            [(ngModel)]="atrialPulseAmplitude" step="0.1" min="0.5" max="3.2"
+                            [disabled]="!amplitudeRegulatedSelect">
                         </mat-slider>
-                        <mat-slider class="dual-slider" thumbLabel [(ngModel)]="amplitudeRegulated" step="0.5" min="3.5"
-                            max="7.0" [disabled]="!amplitudeRegulatedSelect">
+                        <mat-slider *ngIf="mode == 0 || mode == 1" class="dual-slider" thumbLabel
+                            [(ngModel)]="atrialPulseAmplitude" step="0.5" min="3.5" max="7.0"
+                            [disabled]="!amplitudeRegulatedSelect">
                         </mat-slider>
-                        <div>{{amplitudeRegulated}} V </div>
+                        <mat-slider *ngIf="mode == 2 || mode == 3" class="dual-slider" thumbLabel
+                            [(ngModel)]="ventriclePulseAmplitude" step="0.1" min="0.5" max="3.2"
+                            [disabled]="!amplitudeRegulatedSelect">
+                        </mat-slider>
+                        <mat-slider *ngIf="mode == 2 || mode == 3" class="dual-slider" thumbLabel
+                            [(ngModel)]="ventriclePulseAmplitude" step="0.5" min="3.5" max="7.0"
+                            [disabled]="!amplitudeRegulatedSelect">
+                        </mat-slider>
+                        <div>{{(mode == 0 || mode == 1) ? atrialPulseAmplitude: ventriclePulseAmplitude }} V </div>
                     </div>
                 </mat-radio-group>
             </div>
