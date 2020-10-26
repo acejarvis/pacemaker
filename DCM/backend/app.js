@@ -92,7 +92,8 @@ function updateUserData(body) {
         findExist.ventriclePulseWidth = body.ventriclePulseWidth;
         findExist.ventricularRefractoryPeriod = body.ventricularRefractoryPeriod;
         findExist.atrialRefractoryPeriod = body.atrialRefractoryPeriod;
-        var updatedList = existUsers.map(obj => findExist || obj);
+        var findList = [findExist];
+        var updatedList = existUsers.map(obj => findList.find(o => o.username === obj.username) || obj);
         fs.writeFileSync('users.json', JSON.stringify(updatedList));
         return true;
     }

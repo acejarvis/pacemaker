@@ -20,11 +20,11 @@
             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <input matInput class="form-control" placeholder="Confirm" [type]="hide ? 'password' : 'text'"
-                [(ngModel)]="retypePassword" name="retypePassword" required>
+            <input matInput class="form-control" placeholder="Re-Enter your Password"
+                [type]="hide ? 'password' : 'text'" [(ngModel)]="retypePassword" name="retypePassword" required>
             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </mat-form-field>
-        <mat-error *ngIf="!isSignupValid"> Please fill in all the information.</mat-error>
+        <mat-error *ngIf="!isSignupValid"> Please make sure all the information is correct.</mat-error>
         <button mat-flat-button color="primary" (click)="signUp()">Sign Up</button>
     </form>
 </mat-card>
