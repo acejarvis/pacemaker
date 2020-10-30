@@ -7,8 +7,8 @@ import { HttpClientHelperService } from './http-client-helper.service';
   providedIn: 'root'
 })
 export class AuthService {
-  inMemoryToken = false; // whether the user loginned or not
-  currentUser: string; // user name
+  inMemoryToken = false; // whether the user logged in or not
+  currentUser: string; // logged in user name
   constructor(
     private http: HttpClientHelperService,
     private router: Router) { }
