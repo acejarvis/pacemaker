@@ -4,36 +4,17 @@ const bodyParser = require('body-parser');
 const port = 3000;
 const fs = require('fs');
 const cors = require('cors')
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors())
+app.use(cors());
+
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-app.post('/pacemaker/user', (req, res) => {
-    console.log(req.body);
-    const existUsers = getUserData();
-    const findExist = existUsers.find(user => user.username === req.body.username);
-    if (findExist) {
-        return res.json(findExist);
-    }
-    else {
-        return res.json({ status: false, msg: 'does not exists' });
-    }
-})
-
-app.get('/user/list', (req, res) => {
-    const users = getUserData();
-    res.send(users);
-})
-
-
-// user management
+// user login
 app.post('/auth/login', (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
@@ -50,6 +31,7 @@ app.post('/auth/login', (req, res) => {
     }
 })
 
+// sign up
 app.post('/auth/register', (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
@@ -65,19 +47,32 @@ app.post('/auth/register', (req, res) => {
     }
 })
 
+// get user defined parameters
+app.post('/pacemaker/user', (req, res) => {
+    console.log(req.body);
+    const existUsers = getUserData();
+    const findExist = existUsers.find(user => user.username === req.body.username);
+    if (findExist) {
+        return res.json(findExist);
+    }
+    else {
+        return res.json({ status: false, msg: 'does not exists' });
+    }
+})
+
 // update parameters
-app.post('/pacemaker/dispatch', (req, res) => {
+app.post('/pacemaker/update', (req, res) => {
     var result = updateUserData(req.body);
-    if (result) return res.json({ status: true, msg: 'Dispatched successfully' });
+    if (result) return res.json({ status: true, msg: 'Parameters updated successfully' });
     else return res.json({ status: false, msg: 'user not found.' })
 });
 
 
+// Data Access Objects
 function getUserData() {
     const jsonData = fs.readFileSync('users.json');
     return JSON.parse(jsonData);
 }
-
 
 function updateUserData(body) {
     const existUsers = getUserData();
@@ -101,8 +96,6 @@ function updateUserData(body) {
         return false;
     }
 }
-
-
 
 function register(username, password) {
     const jsonData = getUserData();
@@ -131,10 +124,6 @@ function register(username, password) {
         return { status: false, msg: 'User spots are full.' };
     }
 }
-
-io.on('connection', (socket) => {
-    console.log('a user connected');
-});
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

@@ -8,15 +8,15 @@ import { HttpClientHelperService } from '../web/http-client-helper.service';
 export class DashService {
 
   constructor(private http: HttpClientHelperService) { }
+
   getPaceMakerData(username: string): Observable<any> {
     const body = {
-      username: username
+      username
     };
     return this.http.dashPost('/pacemaker/user', body);
   }
 
-  dispatchPaceMakerData(body: any): Observable<any> {
-    return this.http.dashPost('/pacemaker/dispatch', body);
+  updatePaceMakerData(body: any): Observable<any> {
+    return this.http.dashPost('/pacemaker/update', body);
   }
-
 }

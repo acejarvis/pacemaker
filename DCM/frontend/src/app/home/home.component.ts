@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
 import {
   ChartComponent,
   ApexAxisChartSeries,
@@ -45,7 +44,6 @@ export class HomeComponent implements OnInit {
   atrialRefractoryPeriod = 250;
   ventricularRefractoryPeriod = 320;
 
-
   changeset = false;
   @ViewChild('chart') chart: ChartComponent;
   public chartAOptions: Partial<any>;
@@ -56,6 +54,8 @@ export class HomeComponent implements OnInit {
     private snackBar: MatSnackBar,
     private dashService: DashService,
     private authService: AuthService) {
+
+    // for demo use
     this.chartAOptions = {
       series: [
         {
@@ -93,6 +93,7 @@ export class HomeComponent implements OnInit {
     //   this.chart.updateSeries([{ data: this.data }])
     // }, 100);
 
+    // for demo use
     this.chartVOptions = {
       series: [
         {
@@ -116,10 +117,10 @@ export class HomeComponent implements OnInit {
         categories: ['10000', '10001', '10002', '10003', '10004', '10005', '10006', '10007', '10008']
       }
     };
-
   }
 
   ngOnInit(): void {
+    // load user defined pacemaker parameters
     this.dashService.getPaceMakerData(this.authService.currentUser).subscribe(response => {
       this.mode = response.mode;
       this.lowerRateLimit = response.lowerRateLimit;
@@ -159,13 +160,11 @@ export class HomeComponent implements OnInit {
     else { this.status = 'Disconnected'; }
   }
 
-  dispatch(): void {
-    console.log(this.pulseWidthSelect);
+  updateParameters(): void {
     if (this.pulseWidthSelect === 0) {
       if (this.mode === 0 || this.mode === 1) { this.atrialPulseWidth = 0.05; }
       else { this.ventriclePulseWidth = 0.05; }
     }
-    console.log(this.amplitudeRegulatedSelect);
     if (this.amplitudeRegulatedSelect === 0) {
       if (this.mode === 0 || this.mode === 1) { this.atrialPulseAmplitude = 0; }
       else { this.ventriclePulseAmplitude = 0; }
@@ -182,15 +181,14 @@ export class HomeComponent implements OnInit {
       ventricularRefractoryPeriod: this.ventricularRefractoryPeriod,
       atrialRefractoryPeriod: this.atrialRefractoryPeriod
     };
-    console.log(body);
-    this.dashService.dispatchPaceMakerData(body).subscribe(result => {
+    this.dashService.updatePaceMakerData(body).subscribe(result => {
       this.snackBar.open(result.msg, undefined, { duration: 1000, verticalPosition: 'top' });
     });
   }
 
+  // for demo use
   public updateSeries(): void {
     this.changeset = !this.changeset;
-
     this.chartAOptions.series = this.changeset ? [{
       data: [23, 44, 1, 22, 10, 11, 10, 10, 12, 13]
     }] : [{

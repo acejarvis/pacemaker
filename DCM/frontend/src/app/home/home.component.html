@@ -18,10 +18,10 @@
                     {{isConnected ? 'Disconnect':'Connect'}}</button>
             </div>
             <div fxLayout="row" fxLayoutAlign="space-around center">
-
+                <button mat-raised-button color="primary" (click)="updateParameters()">Update Parameters</button>
                 <button mat-raised-button [color]="isRunning ? 'warn':'primary'" (click)="stopStart()">
                     {{isRunning ? 'Stop':'Run'}}</button>
-                <button mat-raised-button color="primary" (click)="dispatch()">Dispatch Parameters</button>
+                <button mat-raised-button color="primary">Dispatch</button>
             </div>
         </mat-card>
         <!-- Mode -->
