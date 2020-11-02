@@ -38,9 +38,7 @@ export class HomeComponent implements OnInit {
   atrialPulseAmplitude = 1;
   ventriclePulseAmplitude = 1;
 
-  amplitudeRegulated = 3.5;
-  amplitudeRegulatedSelect = 1;
-  amplitudeUnregulated = 3.7;
+  amplitudeSelect = 1;
   atrialRefractoryPeriod = 250;
   ventricularRefractoryPeriod = 320;
 
@@ -133,11 +131,11 @@ export class HomeComponent implements OnInit {
       this.ventricularRefractoryPeriod = response.ventricularRefractoryPeriod;
       if (this.mode === 0 || this.mode === 1) {
         this.pulseWidthSelect = response.atrialPulseWidth < 0.1 ? 0 : 1;
-        this.amplitudeRegulatedSelect = response.atrialPulseAmplitude < 0.5 ? 0 : 1;
+        this.amplitudeSelect  = response.atrialPulseAmplitude < 0.5 ? 0 : 1;
       }
       else {
         this.pulseWidthSelect = response.ventriclePulseWidth < 0.1 ? 0 : 1;
-        this.amplitudeRegulatedSelect = response.ventriclePulseAmplitude < 0.5 ? 0 : 1;
+        this.amplitudeSelect  = response.ventriclePulseAmplitude < 0.5 ? 0 : 1;
       }
     });
   }
@@ -165,7 +163,7 @@ export class HomeComponent implements OnInit {
       if (this.mode === 0 || this.mode === 1) { this.atrialPulseWidth = 0.05; }
       else { this.ventriclePulseWidth = 0.05; }
     }
-    if (this.amplitudeRegulatedSelect === 0) {
+    if (this.amplitudeSelect === 0) {
       if (this.mode === 0 || this.mode === 1) { this.atrialPulseAmplitude = 0; }
       else { this.ventriclePulseAmplitude = 0; }
     }

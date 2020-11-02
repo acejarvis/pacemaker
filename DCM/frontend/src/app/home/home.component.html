@@ -90,7 +90,7 @@
             </div>
             <div fxLayout="row" fxLayoutAlign="start center">
                 <mat-radio-group fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px"
-                    [(ngModel)]="amplitudeRegulatedSelect">
+                    [(ngModel)]="amplitudeSelect ">
                     <div fxLayout="row">
                         <mat-radio-button [value]="0"></mat-radio-button>
                         <div>OFF</div>
@@ -99,19 +99,19 @@
                         <mat-radio-button [value]="1"></mat-radio-button>
                         <mat-slider *ngIf="mode == 0 || mode == 1" class="dual-slider" thumbLabel
                             [(ngModel)]="atrialPulseAmplitude" step="0.1" min="0.5" max="3.2"
-                            [disabled]="!amplitudeRegulatedSelect">
+                            [disabled]="!amplitudeSelect ">
                         </mat-slider>
                         <mat-slider *ngIf="mode == 0 || mode == 1" class="dual-slider" thumbLabel
                             [(ngModel)]="atrialPulseAmplitude" step="0.5" min="3.5" max="7.0"
-                            [disabled]="!amplitudeRegulatedSelect">
+                            [disabled]="!amplitudeSelect ">
                         </mat-slider>
                         <mat-slider *ngIf="mode == 2 || mode == 3" class="dual-slider" thumbLabel
                             [(ngModel)]="ventriclePulseAmplitude" step="0.1" min="0.5" max="3.2"
-                            [disabled]="!amplitudeRegulatedSelect">
+                            [disabled]="!amplitudeSelect ">
                         </mat-slider>
                         <mat-slider *ngIf="mode == 2 || mode == 3" class="dual-slider" thumbLabel
                             [(ngModel)]="ventriclePulseAmplitude" step="0.5" min="3.5" max="7.0"
-                            [disabled]="!amplitudeRegulatedSelect">
+                            [disabled]="!amplitudeSelect ">
                         </mat-slider>
                         <div>{{(mode == 0 || mode == 1) ? atrialPulseAmplitude: ventriclePulseAmplitude }} V </div>
                     </div>
