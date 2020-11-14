@@ -1,14 +1,26 @@
+const http = require('http');
 const express = require('express');
 const app = express();
+
 const bodyParser = require('body-parser');
 const port = 3000;
 const fs = require('fs');
-const cors = require('cors')
+const cors = require('cors');
+
+// create socket object
+const Server = http.createServer(app);
+const io = require('socket.io').listen(Server);
+const Serialport = require('serialport');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
+
+io.on('connection', socket => {
+    console.log('DCM connected');
+    socket.emit('connected');
+})
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
