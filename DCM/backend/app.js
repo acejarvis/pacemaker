@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 
 const bodyParser = require('body-parser');
-const port = 3000;
 const fs = require('fs');
 const cors = require('cors');
 
@@ -11,10 +10,12 @@ const cors = require('cors');
 const Server = http.createServer(app);
 const io = require('socket.io').listen(Server);
 const Serialport = require('serialport');
+const Readline = Serialport.parsers.Readline;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
+
 
 
 io.on('connection', socket => {
@@ -25,6 +26,31 @@ io.on('connection', socket => {
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
+
+app.get('/pacemaker/port', (req, res) => {
+    var portList = [];
+    Serialport.list().then(
+        ports => res.json(ports),
+        err => {
+            console.error(err);
+            res.json(err)
+        }
+    );
+});
+
+app.post('/pacemaker/stopstart', (req, res) => {
+    if (req.body.isConnected == true) {
+        const port = new Serialport(req.body.port, { autoOpen: true });
+        res.send('OK');
+        port.on('data', function (data) {
+            console.log('Data:', data)
+        });
+    }
+    else {
+        Serialport.close();
+        res.send('Closed');
+    }
+})
 
 // user login
 app.post('/auth/login', (req, res) => {
@@ -61,15 +87,7 @@ app.post('/auth/register', (req, res) => {
 
 // get user defined parameters
 app.post('/pacemaker/user', (req, res) => {
-    console.log(req.body);
-    const existUsers = getUserData();
-    const findExist = existUsers.find(user => user.username === req.body.username);
-    if (findExist) {
-        return res.json(findExist);
-    }
-    else {
-        return res.json({ status: false, msg: 'does not exists' });
-    }
+    res.json(getUserData(req.body.username));
 })
 
 // update parameters
@@ -79,15 +97,35 @@ app.post('/pacemaker/update', (req, res) => {
     else return res.json({ status: false, msg: 'user not found.' })
 });
 
+app.post('/pacemaker/dispatch', (req, res) => {
+    var result = updateUserData(req.body);
+    if (result.status === true) {
+
+    }
+
+})
+
 
 // Data Access Objects
-function getUserData() {
+function getUsersList() {
     const jsonData = fs.readFileSync('users.json');
     return JSON.parse(jsonData);
 }
 
+function getUserData(username) {
+    const existUsers = getUsersList();
+    const findExist = existUsers.find(user => user.username === username);
+    if (findExist) {
+        return findExist;
+    }
+    else {
+        return { status: false, msg: 'does not exists' };
+    }
+}
+
+
 function updateUserData(body) {
-    const existUsers = getUserData();
+    const existUsers = getUsersList();
     const findExist = existUsers.find(user => user.username === body.username);
     if (findExist) {
         findExist.mode = body.mode ? body.mode : findExist.mode;
@@ -137,6 +175,6 @@ function register(username, password) {
     }
 }
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+app.listen(3000, () => {
+    console.log(`Example app listening at http://localhost:3000`);
 });
