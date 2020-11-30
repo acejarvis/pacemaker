@@ -14,6 +14,9 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { AuthGuard } from './services/web/auth.guard';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {}};
 
 @NgModule({
   declarations: [
@@ -32,7 +35,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [
     AuthGuard,

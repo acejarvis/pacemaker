@@ -1,34 +1,39 @@
-const http = require('http');
 const express = require('express');
 const app = express();
+const server =app.listen(3000);
 
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require('cors');
 
 // create socket object
-const Server = http.createServer(app);
-const io = require('socket.io').listen(Server);
+const io = require('socket.io').listen(server);
 const Serialport = require('serialport');
-const Readline = Serialport.parsers.Readline;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
+const data = 0;
 
 
+// streaming data to frontend
 io.on('connection', socket => {
     console.log('DCM connected');
     socket.emit('connected');
+    setInterval(() => {
+        socket.emit('pacemaker', data, (data) => {
+            console.log(data);
+        });
+    }, 500);
 })
+
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
 app.get('/pacemaker/port', (req, res) => {
-    var portList = [];
     Serialport.list().then(
         ports => res.json(ports),
         err => {
@@ -38,26 +43,32 @@ app.get('/pacemaker/port', (req, res) => {
     );
 });
 
+// open / close a port
 app.post('/pacemaker/stopstart', (req, res) => {
     if (req.body.isConnected == true) {
-        const port = new Serialport(req.body.port, { autoOpen: true });
-        res.send('OK');
-        port.on('data', function (data) {
-            console.log('Data:', data)
+        const port = new Serialport(req.body.port, { autoOpen: true, baudRate: 115200 });
+        // var status = port.isOpen()
+        res.send('open');
+        port.on('data', (point) => {
+            console.log('Data:', point);
+            data = point;
         });
     }
     else {
-        Serialport.close();
+        // port.close();
         res.send('Closed');
     }
-})
+});
+
+
+
 
 // user login
 app.post('/auth/login', (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
     if (username && password) {
-        const existUsers = getUserData();
+        const existUsers = getUsersList();
         const findExist = existUsers.find(user => user.username === username);
         if (!findExist) {
             return res.status(409).send({ error: true, msg: 'username not exist' })
@@ -74,10 +85,11 @@ app.post('/auth/register', (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
     if (username && password) {
-        const existUsers = getUserData();
+        const existUsers = getUsersList();
         const findExist = existUsers.find(user => user.username === username);
+        console.log(findExist);
         if (!findExist) {
-            return res.send(register(username, password))
+            return res.send(register(username, password));
         }
         else {
             return res.json({ status: false, msg: 'User exists.' });
@@ -137,6 +149,7 @@ function updateUserData(body) {
         findExist.ventriclePulseWidth = body.ventriclePulseWidth;
         findExist.ventricularRefractoryPeriod = body.ventricularRefractoryPeriod;
         findExist.atrialRefractoryPeriod = body.atrialRefractoryPeriod;
+        findExist.portList = body.postList;
         var findList = [findExist];
         var updatedList = existUsers.map(obj => findList.find(o => o.username === obj.username) || obj);
         fs.writeFileSync('users.json', JSON.stringify(updatedList));
@@ -148,7 +161,8 @@ function updateUserData(body) {
 }
 
 function register(username, password) {
-    const jsonData = getUserData();
+    const jsonData = getUsersList();
+    console.log(jsonData);
     const userCount = Object.keys(jsonData).length;
     console.log(userCount);
     if (userCount < 10) {
@@ -163,7 +177,8 @@ function register(username, password) {
             "atrialPulseWidth": 0.4,
             "ventriclePulseWidth": 0.4,
             "ventricularRefractoryPeriod": 320,
-            "atrialRefractoryPeriod": 250
+            "atrialRefractoryPeriod": 250,
+            "portList": []
         };
         jsonData.push(body);
         console.log(jsonData);
@@ -174,7 +189,3 @@ function register(username, password) {
         return { status: false, msg: 'User spots are full.' };
     }
 }
-
-app.listen(3000, () => {
-    console.log(`Example app listening at http://localhost:3000`);
-});

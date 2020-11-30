@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "DCM-UI"
+  "defaultProject": "DCM-UI",
+  "cli": {
+    "analytics": false
+  }
 }

@@ -9,8 +9,8 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Select Device Port</mat-label>
                     <mat-select [(value)]="port">
-                        <mat-option [value]="0">COM3</mat-option>
-                        <mat-option [value]="1">COM4</mat-option>
+                        <mat-option *ngFor="let port of portList" [value]="port">{{port.path}}</mat-option>
+
                     </mat-select>
                 </mat-form-field>
                 <button mat-raised-button [color]="isConnected ? 'secondary':'primary'"
@@ -30,10 +30,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Select a Mode</mat-label>
                     <mat-select [(value)]="mode">
-                        <mat-option [value]="0">AOO</mat-option>
-                        <mat-option [value]="1">AAI</mat-option>
-                        <mat-option [value]="2">VOO</mat-option>
-                        <mat-option [value]="3">VVI</mat-option>
+                        <mat-option *ngFor="let mode of modes" [value]="mode">{{mode.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
